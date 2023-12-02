@@ -6,11 +6,15 @@ const RadioBrowser = require('radio-browser')
 //Objeto da Aplicação
 const app = express()
 
+//Configurando o EJS como motor de visualização
+app.set('view engine', 'ejs')
+
 //Definindo a Porta da Aplicação
 const port = 3000;
 
 //Middleware global
 app.use(morgan('Request')) //Loga um Request a cada requisição
+app.use(express.static('Public'))
 
 //Rotas
 app.get('/', async(req,res) => {
@@ -22,7 +26,7 @@ app.get('/', async(req,res) => {
     RadioBrowser.getStations(filter)
         .then(data => {
             log.green('Sucesso', 'Requisição Feita')
-            res.sendFile(__dirname + '/Public/index.html', { data })
+            res.render('index', { data })
 
         })
         .catch(error => {
