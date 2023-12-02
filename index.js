@@ -1,7 +1,8 @@
 const express = require('express')
 const morgan = require('morgan')
 const {log} = require('mercedlogger')
-
+const apiRouter = require('./Controllers/Api')
+const RadioBrowser = require('radio-browser')
 //Objeto da Aplicação
 const app = express()
 
@@ -12,8 +13,23 @@ const port = 3000;
 app.use(morgan('Request')) //Loga um Request a cada requisição
 
 //Rotas
-app.get('/',(req,res) => {
-    res.sendFile(__dirname + '/index.html')
+app.get('/', async(req,res) => {
+    let filter = {
+        limit: 5,
+        by: 'tag',
+        searchterm: 'jazz'
+    }
+    RadioBrowser.getStations(filter)
+        .then(data => {
+            log.green('Sucesso', 'Requisição Feita')
+            res.sendFile(__dirname + '/Public/index.html', { data })
+
+        })
+        .catch(error => {
+            log.red('Erro na requisição da API', error);
+            res.status(500).send('Erro interno do servidor');
+        })
+
 })
 
 
