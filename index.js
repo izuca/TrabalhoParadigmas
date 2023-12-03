@@ -1,7 +1,14 @@
 const express = require('express')
 const morgan = require('morgan')
 const {log} = require('mercedlogger')
+<<<<<<< HEAD
+/*const apiRouter = require('./Controllers/Api')*/
+=======
+>>>>>>> ea920743c5c94ff247f942c94c41705c780d2b5a
 const RadioBrowser = require('radio-browser')
+const natural = require('natural');
+const path = require('path');
+
 //Objeto da Aplicação
 const app = express()
 
