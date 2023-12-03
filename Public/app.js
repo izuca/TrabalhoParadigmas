@@ -2,10 +2,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     console.log('O evento DOMContentLoaded foi disparado!');
     
-    window.processText = function () {
-        console.log('Função processText foi chamada!');
-        
-        const textInput = document.getElementById('textInput').value;
+    window.processText = function (textInput) {
         console.log('Texto de entrada:', textInput);
 
         const tokenizer = new natural.WordTokenizer();

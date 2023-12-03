@@ -9,35 +9,72 @@
       type="text/css"
     />
     <title>Radio API</title>
-    
+    <!-- Corrigindo a referência para app.js -->
+    <script type="module" src="/Public/app.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
     <div class="navbar bg-base-100">
         <a class="btn btn-ghost text-xl">Radio API</a>
+        <!-- Adicionando um campo de pesquisa e um botão -->
+        <div class="flex items-center">
+            <input
+                type="text"
+                id="searchInput"
+                class="form-input"
+                placeholder="Digite sua pesquisa"
+            />
+            <button onclick="performSearch()" class="btn btn-primary">Pesquisar</button>
+          
+        </div>
     </div>
-    
+
     <div class="overflow-x-auto">
-        <table class="table w-full max-w-xs ">
+        <table class="table">
           <!-- head -->
           <thead>
             <tr>
+              <th></th>
               <th>Nome</th>
-              <th>Tag</th>
-              <th>País</th>
+              <!-- preciso ver quais informacoes da radio disponibilizar -->
+              <th>Job</th>
+              <th>Favorite Color</th>
             </tr>
           </thead>
           <tbody>
-            
-            <% data.forEach( item => { %>
-              <tr class="hover">
-                <td class="whitespace-normal"><%= item.name %></td>
-                <td class="whitespace-normal"><%= item.tags %></td>
-                <td class="whitespace-normal"><%= item.country %></td>
-              </tr>
-            <% }) %>
+            <!-- row 1 -->
+            <tr>
+              <th>1</th>
+              <td>Cy Ganderton</td>
+              <td>Quality Control Specialist</td>
+              <td>Blue</td>
+            </tr>
+            <!-- row 2 -->
+            <tr>
+              <th>2</th>
+              <td>Hart Hagerty</td>
+              <td>Desktop Support Technician</td>
+              <td>Purple</td>
+            </tr>
+            <!-- row 3 -->
+            <tr>
+              <th>3</th>
+              <td>Brice Swyre</td>
+              <td>Tax Accountant</td>
+              <td>Red</td>
+            </tr>
           </tbody>
         </table>
-      </div>
+    </div>
+
+    <!-- Adicionando uma função JavaScript para lidar com a pesquisa -->
+    <script>
+      function performSearch() {
+        console.log(window.processText);
+        const searchText = document.getElementById('searchInput').value;
+        window.processText(searchText);
+    }
+  </script>
+  
 </body>
 </html>
