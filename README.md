@@ -5,17 +5,17 @@
 
 ### Configuração do Projeto
 
-- [ ] Configurar um projeto em JavaScript.
-- [ ] Integrar e configurar o Axios para fazer chamadas assíncronas à API REST.
+- [x] Configurar um projeto em JavaScript.
+- [x] Integrar e configurar o RadioStations para fazer chamadas assíncronas à API REST.
 
 ### Interface do Usuário
 
 - [ ] Criar uma página web com duas tabelas.
-- [ ] Utilizar TailwindCSS para estilizar a interface.
+- [x] Utilizar TailwindCSS para estilizar a interface.
 
 ### Consulta Assíncrona
 
-- [ ] Implementar chamadas assíncronas para a API REST.
+- [x] Implementar chamadas assíncronas para a API REST.
 - [ ] Habilitar ordenação e paginação dos dados na API.
 
 ### Tabela de Consulta
