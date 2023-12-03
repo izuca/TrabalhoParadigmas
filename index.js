@@ -40,10 +40,12 @@ app.get('/', async(req,res) => {
                 return pgAtual
             }
 
-            let pagina  = criaPagina(currentPage,itemPerPage);
-
-            console.log(pagina.length)
-            res.render('index',{ pagina })
+            let pagina  = []
+            for(i = 0; i < numberOfPages; i++){
+                pagina[i] = criaPagina(i+1,itemPerPage);
+            }
+            
+            res.render('index',{ pagina,currentPage,numberOfPages })
 
         })
         .catch(error => {
@@ -52,7 +54,6 @@ app.get('/', async(req,res) => {
         })
 
 })
-
 
 //App listener
 app.listen(port, () => {

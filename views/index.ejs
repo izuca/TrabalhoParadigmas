@@ -29,7 +29,7 @@
           </thead>
           <tbody>
             
-            <% pagina.forEach( item => { %>
+            <% pagina[currentPage-1].forEach( item => { %>
               <tr class="hover">
                 <td class="whitespace-normal"><%= item.name %></td>
                 <td class="whitespace-break-spaces"><%= item.tags %></td>
@@ -38,6 +38,29 @@
             <% }) %>
           </tbody>
         </table>
+        <div class="join"id="pagination">
+          <button class="join-item btn btn-square"><%= currentPage %></button>
+          <button class="join-item btn btn-square"><%= currentPage + 1 %></button>
+          <button class="join-item btn btn-square"><%= currentPage + 2 %></button>
+          <button class="join-item btn btn-square btn-disabled">...</button>
+          <button class="join-item btn btn-square"><%= numberOfPages - 2%></button>
+          <button class="join-item btn btn-square"><%= numberOfPages - 1%></button>
+          <button class="join-item btn btn-square"><%= numberOfPages%></button>
+        </div>
+
+        <script>
+          const button = document.getElementById("pagination")
+          button.addEventListener('click', (event) =>{
+            
+            if(event.target.tagName === 'BUTTON' && event.target.textContent != '...'){
+              let clickedPg = parseInt(event.target.textContent)
+              console.log(clickedPg)
+              
+            }
+          })
+        </script>
+        
       </div>
+
 </body>
 </html>
