@@ -29,11 +29,11 @@
           </thead>
           <tbody>
             
-            <% data.forEach( item => { %>
+            <% pagina.forEach( item => { %>
               <tr class="hover">
                 <td class="whitespace-normal"><%= item.name %></td>
-                <td class="whitespace-normal"><%= item.tags %></td>
-                <td class="whitespace-normal"><%= item.country %></td>
+                <td class="whitespace-break-spaces"><%= item.tags %></td>
+                <td><%= item.country %></td>
               </tr>
             <% }) %>
           </tbody>

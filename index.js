@@ -18,15 +18,32 @@ app.use(morgan('Request')) //Loga um Request a cada requisição
 //Rotas
 app.get('/', async(req,res) => {
     let filter = {
-        limit: 20,
-        by: 'tag',
-        searchterm: 'jazz'
+        by:'topvote',
+        limit: 1000
     }
+
+    //Buscando 1000 estações mais votadas
     RadioBrowser.getStations(filter)
         .then(data => {
             log.green('Sucesso', 'Requisição Feita')
-            console.log(data)
-            res.render('index',{ data })
+            
+            const totalStations = data.length
+            const itemPerPage = 10
+            const numberOfPages = Math.ceil(totalStations/itemPerPage)
+            let currentPage = 1
+            
+            const criaPagina = (currentPage,itemPerPage) => {
+                const trimStart = (currentPage - 1) * itemPerPage
+                const trimEnd = trimStart + itemPerPage
+                const pgAtual = data.slice(trimStart,trimEnd)
+
+                return pgAtual
+            }
+
+            let pagina  = criaPagina(currentPage,itemPerPage);
+
+            console.log(pagina.length)
+            res.render('index',{ pagina })
 
         })
         .catch(error => {
