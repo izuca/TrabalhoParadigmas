@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@2.6.0/dist/full.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <title>Radio API</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <div class="navbar bg-base-100">
+        <a class="btn btn-ghost text-xl">Radio API</a>
+    </div>
+    
+    <div class="overflow-x-auto">
+        <table class="table w-full max-w-xs ">
+          <!-- head -->
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Tag</th>
+              <th>País</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+            <% data.forEach( item => { %>
+              <tr class="hover">
+                <td class="whitespace-normal"><%= item.name %></td>
+                <td class="whitespace-normal"><%= item.tags %></td>
+                <td class="whitespace-normal"><%= item.country %></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+</body>
+</html>

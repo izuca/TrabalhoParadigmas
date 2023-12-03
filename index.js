@@ -1,7 +1,6 @@
 const express = require('express')
 const morgan = require('morgan')
 const {log} = require('mercedlogger')
-const apiRouter = require('./Controllers/Api')
 const RadioBrowser = require('radio-browser')
 //Objeto da Aplicação
 const app = express()
@@ -14,19 +13,20 @@ const port = 3000;
 
 //Middleware global
 app.use(morgan('Request')) //Loga um Request a cada requisição
-app.use(express.static('Public'))
+
 
 //Rotas
 app.get('/', async(req,res) => {
     let filter = {
-        limit: 5,
+        limit: 20,
         by: 'tag',
         searchterm: 'jazz'
     }
     RadioBrowser.getStations(filter)
         .then(data => {
             log.green('Sucesso', 'Requisição Feita')
-            res.render('index', { data })
+            console.log(data)
+            res.render('index',{ data })
 
         })
         .catch(error => {
