@@ -39,26 +39,16 @@
           </tbody>
         </table>
         <div class="join"id="pagination">
-          <button class="join-item btn btn-square"><%= currentPage %></button>
-          <button class="join-item btn btn-square"><%= currentPage + 1 %></button>
-          <button class="join-item btn btn-square"><%= currentPage + 2 %></button>
+          <a href="/?page=<%= currentPage %>" class="join-item btn btn-square"><%= currentPage %></a>
+          <a href="/?page=<%= currentPage %>" class="join-item btn btn-square"><%= currentPage + 1 %></a>
+          <a href="/?page=<%= currentPage %>" class="join-item btn btn-square"><%= currentPage + 2 %></a>
           <button class="join-item btn btn-square btn-disabled">...</button>
-          <button class="join-item btn btn-square"><%= numberOfPages - 2%></button>
-          <button class="join-item btn btn-square"><%= numberOfPages - 1%></button>
-          <button class="join-item btn btn-square"><%= numberOfPages%></button>
+          <a href="/?page=<%= numberOfPages -2 %>" class="join-item btn btn-square"><%= numberOfPages - 2%></a>
+          <a href="/?page=<%= numberOfPages - 1 %>" class="join-item btn btn-square"><%= numberOfPages - 1%></a>
+          <a href="/?page=<%= numberOfPages %>" class="join-item btn btn-square"><%= numberOfPages%></a>
         </div>
 
-        <script>
-          const button = document.getElementById("pagination")
-          button.addEventListener('click', (event) =>{
-            
-            if(event.target.tagName === 'BUTTON' && event.target.textContent != '...'){
-              let clickedPg = parseInt(event.target.textContent)
-              console.log(clickedPg)
-              
-            }
-          })
-        </script>
+      
         
       </div>
 

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@2.6.0/dist/full.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <title>BALLDONTLIE API</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <div class="navbar bg-base-100">
+        <a class="btn btn-ghost text-xl">BALLDONTLIE API</a>
+    </div>
+    
+    <div class="overflow-x-auto">
+        <table class="table w-full max-w-xs">
+          <!-- head -->
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Time</th>
+              <th>Selecionar</th>
+            </tr>
+          </thead>
+          <tbody id="players-list">
+            <!-- Dados dos jogadores serão inseridos aqui dinamicamente -->
+          </tbody>
+        </table>
+        
+        <div class="join" id="pagination">
+            <button class="join-item btn btn-square" id="prevPage"><</button>
+            <button class="join-item btn btn-square" id="nextPage">></button>
+          </div>
+    </div>
+
+    
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const apiUrl = "https://balldontlie.io/api/v1/players";
+      const playersList = document.getElementById("players-list");
+      const pagination = document.getElementById("pagination");
+      let currentPage = 1;
+  
+      function createPlayerElement(player) {
+                const row = document.createElement("tr");
+                row.classList.add("hover");
+
+                const nameCell = document.createElement("td");
+                nameCell.textContent = `${player.first_name}  ${player.last_name}`;
+
+                const teamCell = document.createElement("td");
+                teamCell.textContent = player.team.name;
+
+                const checkboxCell = document.createElement("td")
+                checkboxCell.classList.add("justify-center");
+                    const selectCell = document.createElement("input");
+                    selectCell.type = "checkbox";
+                    selectCell.classList.add("checkbox");
+                    selectCell.classList.add("hover");
+                checkboxCell.appendChild(selectCell)
+
+
+                row.appendChild(nameCell);
+                row.appendChild(teamCell);
+                row.appendChild(selectCell);
+
+                playersList.appendChild(row);
+        }
+  
+      function fetchPlayers(page) {
+        const url = `${apiUrl}?page=${page}&per_page=10`;
+  
+        fetch(url)
+          .then(response => response.json())
+          .then(data => {
+            playersList.innerHTML = ''; // Limpar a lista antes de adicionar novos jogadores
+            const players = data.data;
+  
+            players.forEach(player => {
+              createPlayerElement(player);
+            });
+          })
+          .catch(error => {
+            console.error("Erro ao obter dados da API:", error);
+          });
+      }
+  
+      // Inicialmente, carregar os jogadores da primeira página
+      fetchPlayers(currentPage);
+  
+      // Adicionar lógica para a página anterior e próxima página
+      const prevPageButton = document.getElementById("prevPage");
+      const nextPageButton = document.getElementById("nextPage");
+  
+      prevPageButton.addEventListener("click", function() {
+        if (currentPage > 1) {
+          currentPage--;
+          fetchPlayers(currentPage);
+        }
+      });
+  
+      nextPageButton.addEventListener("click", function() {
+        // Ajuste o limite de acordo com o número total de páginas, se disponível
+        const totalPages = 521;
+        
+        if (currentPage < totalPages) {
+          currentPage++;
+          fetchPlayers(currentPage);
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>
