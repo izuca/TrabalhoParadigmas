@@ -49,15 +49,11 @@
                     <tr>
                     <th>Nome</th>
                     <th>Time</th>
-                    <th>Selecionar</th>
+                    
                     </tr>
                 </thead>
                 <tbody id="selected-Players">
-                    <tr>
-                        <td>Nome</td>
-                        <td>Time</td>
-                        <td>Selecionar</td>
-                    </tr>
+                    
                 </tbody>
             </table>
         </div>
@@ -65,82 +61,118 @@
 
     
 
+<!-- ... (seu código HTML existente) ... -->
+
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-      const apiUrl = "https://balldontlie.io/api/v1/players";
-      const playersList = document.getElementById("players-list");
-      const pagination = document.getElementById("pagination");
-      let currentPage = 1;
-        
-      function createPlayerElement(player) {
-                const row = document.createElement("tr");
-                
-                const nameCell = document.createElement("td");
-                nameCell.textContent = `${player.first_name}  ${player.last_name}`;
+        const apiUrl = "https://balldontlie.io/api/v1/players";
+        const playersList = document.getElementById("players-list");
+        const selectedPlayersList = document.getElementById("selected-Players");
+        const pagination = document.getElementById("pagination");
+        let currentPage = 1;
 
-                const teamCell = document.createElement("td");
-                teamCell.textContent = player.team.name;
+        function createPlayerElement(player) {
+            const row = document.createElement("tr");
 
-                const checkboxCell = document.createElement("td")
-                checkboxCell.classList.add("flex");
-                checkboxCell.classList.add("justify-center");
-                    const selectCell = document.createElement("input");
-                    selectCell.type = "checkbox";
-                    selectCell.classList.add("checkbox");
-                    selectCell.classList.add("hover");
-                checkboxCell.appendChild(selectCell)
+            const nameCell = document.createElement("td");
+            nameCell.textContent = `${player.first_name}  ${player.last_name}`;
 
+            const teamCell = document.createElement("td");
+            teamCell.textContent = player.team.name;
 
-                row.appendChild(nameCell);
-                row.appendChild(teamCell);
-                row.appendChild(checkboxCell);
+            const checkboxCell = document.createElement("td");
+            checkboxCell.classList.add("flex");
+            checkboxCell.classList.add("justify-center");
 
-                playersList.appendChild(row);
+            const selectCell = document.createElement("input");
+            selectCell.type = "checkbox";
+            selectCell.classList.add("checkbox");
+            selectCell.classList.add("hover");
+            checkboxCell.appendChild(selectCell);
+
+            row.appendChild(nameCell);
+            row.appendChild(teamCell);
+            row.appendChild(checkboxCell);
+
+            playersList.appendChild(row);
+
         }
-  
-      function fetchPlayers(page) {
-        const url = `${apiUrl}?page=${page}&per_page=10`;
-  
-        fetch(url)
-          .then(response => response.json())
-          .then(data => {
-            playersList.innerHTML = ''; // Limpar a lista antes de adicionar novos jogadores
-            const players = data.data;
-  
-            players.forEach(player => {
-              createPlayerElement(player);
+
+        function moveSelectedPlayer(row, isSelected) {
+            if (isSelected) {
+                // Clona a linha e a move para a tabela de jogadores selecionados
+                const selectedRow = row.cloneNode(true);
+                selectedPlayersList.appendChild(selectedRow);
+                // Remove o checkbox da cópia na tabela de jogadores selecionados
+                selectedRow.querySelector(".checkbox").remove();
+            } else {
+                // Remove a linha da tabela de jogadores selecionados
+                row.remove();
+            }
+        }
+
+        function fetchPlayers(page) {
+            const url = `${apiUrl}?page=${page}&per_page=10`;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    playersList.innerHTML = ''; // Limpar a lista antes de adicionar novos jogadores
+                    const players = data.data;
+
+                    players.forEach(player => {
+                        createPlayerElement(player);
+                    });
+                })
+                .catch(error => {
+                    console.error("Erro ao obter dados da API:", error);
+                });
+        }
+
+        // Inicialmente, carregar os jogadores da primeira página
+        fetchPlayers(currentPage);
+
+        // Adicionar lógica para a página anterior e próxima página
+        const prevPageButton = document.getElementById("prevPage");
+        const nextPageButton = document.getElementById("nextPage");
+
+        prevPageButton.addEventListener("click", function() {
+            if (currentPage > 1) {
+                currentPage--;
+                fetchPlayers(currentPage);
+            }
+        });
+
+        nextPageButton.addEventListener("click", function() {
+            // Ajuste o limite de acordo com o número total de páginas, se disponível
+            const totalPages = 521;
+
+            if (currentPage < totalPages) {
+                currentPage++;
+                fetchPlayers(currentPage);
+            }
+        });
+
+        // Adiciona um botão para mover jogadores selecionados
+        
+        const moveSelectedButton = document.createElement("button");
+        moveSelectedButton.textContent = "Mover Selecionados";
+        moveSelectedButton.classList.add("btn");
+        moveSelectedButton.addEventListener("click", function() {
+            moveSelectedPlayers();
+        });
+
+        document.getElementById("pagination").appendChild(moveSelectedButton);
+
+        function moveSelectedPlayers() {
+            const selectedPlayers = document.querySelectorAll("#players-list .checkbox:checked");
+            selectedPlayers.forEach(player => {
+                moveSelectedPlayer(player.closest("tr"), true);
             });
-          })
-          .catch(error => {
-            console.error("Erro ao obter dados da API:", error);
-          });
-      }
-  
-      // Inicialmente, carregar os jogadores da primeira página
-      fetchPlayers(currentPage);
-  
-      // Adicionar lógica para a página anterior e próxima página
-      const prevPageButton = document.getElementById("prevPage");
-      const nextPageButton = document.getElementById("nextPage");
-  
-      prevPageButton.addEventListener("click", function() {
-        if (currentPage > 1) {
-          currentPage--;
-          fetchPlayers(currentPage);
         }
-      });
-  
-      nextPageButton.addEventListener("click", function() {
-        // Ajuste o limite de acordo com o número total de páginas, se disponível
-        const totalPages = 521;
-        
-        if (currentPage < totalPages) {
-          currentPage++;
-          fetchPlayers(currentPage);
-        }
-      });
     });
-  </script>
+</script>
+
 
 </body>
 </html>
