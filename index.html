@@ -12,30 +12,32 @@
     
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <div class="navbar bg-base-100">
+<body >
+    <div class="navbar bg-base-100 flex justify-center">
         <a class="btn btn-ghost text-xl">BALLDONTLIE API</a>
     </div>
     
-    <div class="overflow-x-auto">
-        <table class="table w-full max-w-xs">
-          <!-- head -->
-          <thead>
-            <tr>
-              <th>Nome</th>
-              <th>Time</th>
-              <th>Selecionar</th>
-            </tr>
-          </thead>
-          <tbody id="players-list">
-            <!-- Dados dos jogadores serão inseridos aqui dinamicamente -->
-          </tbody>
-        </table>
+    <div class="flex justify-center">
+        <div class="overflow-x-auto">
+            <table class="table w-full max-w-xs">
+              <!-- head -->
+              <thead>
+                <tr>
+                  <th>Nome</th>
+                  <th>Time</th>
+                  <th>Selecionar</th>
+                </tr>
+              </thead>
+              <tbody id="players-list">
+                <!-- Dados dos jogadores serão inseridos aqui dinamicamente -->
+              </tbody>
+            </table>
         
-        <div class="join" id="pagination">
-            <button class="join-item btn btn-square" id="prevPage"><</button>
-            <button class="join-item btn btn-square" id="nextPage">></button>
-          </div>
+            <div class="join flex justify-center" id="pagination">
+                <button class="join-item btn btn-square" id="prevPage"><</button>
+                <button class="join-item btn btn-square" id="nextPage">></button>
+              </div>
+        </div>
     </div>
 
     
@@ -46,11 +48,10 @@
       const playersList = document.getElementById("players-list");
       const pagination = document.getElementById("pagination");
       let currentPage = 1;
-  
+        
       function createPlayerElement(player) {
                 const row = document.createElement("tr");
                 
-
                 const nameCell = document.createElement("td");
                 nameCell.textContent = `${player.first_name}  ${player.last_name}`;
 
@@ -58,6 +59,7 @@
                 teamCell.textContent = player.team.name;
 
                 const checkboxCell = document.createElement("td")
+                checkboxCell.classList.add("flex");
                 checkboxCell.classList.add("justify-center");
                     const selectCell = document.createElement("input");
                     selectCell.type = "checkbox";
@@ -68,7 +70,7 @@
 
                 row.appendChild(nameCell);
                 row.appendChild(teamCell);
-                row.appendChild(selectCell);
+                row.appendChild(checkboxCell);
 
                 playersList.appendChild(row);
         }
