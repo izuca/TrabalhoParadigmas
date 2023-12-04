@@ -17,26 +17,49 @@
         <a class="btn btn-ghost text-xl">BALLDONTLIE API</a>
     </div>
     
-    <div class="flex justify-center">
-        <div class="overflow-x-auto">
-            <table class="table w-full max-w-xs">
-              <!-- head -->
-              <thead>
-                <tr>
-                  <th>Nome</th>
-                  <th>Time</th>
-                  <th>Selecionar</th>
-                </tr>
-              </thead>
-              <tbody id="players-list">
-                <!-- Dados dos jogadores serão inseridos aqui dinamicamente -->
-              </tbody>
-            </table>
+    <div class="flex flex-row justify-center gap-5">
         
-            <div class="join flex justify-center" id="pagination">
+        <div class="overflow-x-auto flex flex-col justify-center">
+            <div>
+                <table class="table w-full max-w-xs overflow-x-auto">
+                  <!-- head -->
+                  <thead>
+                    <tr>
+                      <th>Nome</th>
+                      <th>Time</th>
+                      <th>Selecionar</th>
+                    </tr>
+                  </thead>
+                  <tbody id="players-list">
+                    <!-- Dados dos jogadores serão inseridos aqui dinamicamente -->
+                  </tbody>
+                </table>
+            </div>
+        
+            <div class="join flex justify-center gap-2" id="pagination">
                 <button class="join-item btn btn-square" id="prevPage"><</button>
                 <button class="join-item btn btn-square" id="nextPage">></button>
-              </div>
+            </div>
+        </div>
+
+        <div>
+            <table class="table w-full max-w-xs overflow-x-auto">
+                <!-- head -->
+                <thead>
+                    <tr>
+                    <th>Nome</th>
+                    <th>Time</th>
+                    <th>Selecionar</th>
+                    </tr>
+                </thead>
+                <tbody id="selected-Players">
+                    <tr>
+                        <td>Nome</td>
+                        <td>Time</td>
+                        <td>Selecionar</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 
