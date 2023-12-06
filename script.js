@@ -1,8 +1,11 @@
 
-function kmeansParallel(data,k,maxIterations){
+function kmeansParallel(data,k,maxIterations,centroids){
     // Inicializa os centróides aleatoriamente
-    let centroids = initializeCentroids(data,k);
+    //centroids = initializeCentroids(data,k);
     
+    //Inicializa os centroides especificos
+    //console.log(centroids)
+
     let workers = [];
     for(let i = 0; i < k; i++){
       workers.push(new Worker('kmeans-worker.js'));
@@ -52,6 +55,7 @@ function kmeansParallel(data,k,maxIterations){
     return data.slice(0,k); //Atualmente aleatorio
   }
   
+  
   function updateCentroids(clusters, k){
     // Calcula os novos centróides com base nos pontos atribuídos aos clusters
     let newCentroids = [];
@@ -96,10 +100,12 @@ function kmeansParallel(data,k,maxIterations){
     return JSON.stringify(newCentroids) == JSON.stringify(oldCentroids);
   }
   
-  let data = dataSet();
-  let k = 5;
-  let maxIterations = 100;
+  
+
+//   let data = dataSet();
+//   let k = 5;
+//   let maxIterations = 100;
   
   
-  kmeansParallel(data, k, maxIterations)
+  //kmeansParallel(data, k, maxIterations)
   
