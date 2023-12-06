@@ -110,9 +110,18 @@
         }
         
         async function getPlayerData(playerId) {
-            const response = await fetch(`https://www.balldontlie.io/api/v1/season_averages?season=2018&player_ids[]=${playerId}`);
-            const playerAverage = await response.json();
-            return playerAverage;
+           
+            try {
+                
+               const response = await fetch(`https://www.balldontlie.io/api/v1/season_averages?season=2018&player_ids[]=${playerId}`);
+               const playerAverage = await response.json();
+               console.log(playerAverage.data[0])
+               return playerAverage.data[0];
+           } catch (error) {
+                console.error("Erro ao obter médias do Jogador:", error);
+                throw error;
+           }
+           
         }
 
         async function fetchPlayerByName(name){
@@ -227,9 +236,11 @@
 
             const averagePromises = Array.from(similarPlayersData).map(async singleData =>{
                 try {
+                    
                     const average = await getPlayerData(singleData.id);
-                    if(average[0] != undefined)
-                        averageData.push(average.data[0]);
+                    
+                    if(average)
+                        averageData.push(average);
                     else
                         console.log(`${singleData.first_name} não possui registro nessa Temporada`)
                 } catch (error) {
@@ -241,7 +252,7 @@
             let data = dataSet();
             let k = averageData.length;
             let maxIterations = 100;
-            if(averageData == [])
+            if(averageData.length !== 0)
                 kmeansParallel(data,k,maxIterations,averageData)
             else 
                 console.log("Tente outro Jogador")
