@@ -1,5 +1,5 @@
 
-# Radio API
+# BALLDONTLIE API
 
 ## Parte 1: Assíncronicidade
 
@@ -10,23 +10,23 @@
 
 ### Interface do Usuário
 
-- [ ] Criar uma página web com duas tabelas.
+- [x] Criar uma página web com duas tabelas.
 - [x] Utilizar TailwindCSS para estilizar a interface.
 
 ### Consulta Assíncrona
 
 - [x] Implementar chamadas assíncronas para a API REST.
-- [ ] Habilitar ordenação e paginação dos dados na API.
+- [x] Habilitar ordenação e paginação dos dados na API.
 
 ### Tabela de Consulta
 
-- [ ] População dinâmica da tabela de consulta conforme o usuário navega.
-- [ ] Permitir seleção de itens na tabela de consulta.
+- [x] População dinâmica da tabela de consulta conforme o usuário navega.
+- [x] Permitir seleção de itens na tabela de consulta.
 
 ### Tabela de Escrita
 
-- [ ] Criar uma tabela para armazenar as seleções do usuário.
-- [ ] Implementar a transferência de itens selecionados para a tabela de escrita.
+- [x] Criar uma tabela para armazenar as seleções do usuário.
+- [x] Implementar a transferência de itens selecionados para a tabela de escrita.
 
 ### Array em Memória
 
@@ -35,21 +35,16 @@
 
 ### Experiência Interativa
 
-- [ ] Permitir a transferência de itens sem recarregar a página.
-- [ ] Garantir uma experiência interativa e eficiente.
+- [x] Permitir a transferência de itens sem recarregar a página.
+- [x] Garantir uma experiência interativa e eficiente.
 
-### Deploy na Digital Ocean
-
-- [ ] Configurar uma conta na Digital Ocean.
-- [ ] Criar um droplet para hospedar a aplicação.
-- [ ] Configurar o servidor para executar a aplicação.
 
 ## Parte 2: Algoritmo Paralelo
 
 ### Web Workers
 
-- [ ] Implementar Web Workers para realizar chamadas paralelas à API.
-- [ ] Configurar a comunicação entre Web Workers e a área de memória compartilhada.
+- [x] Implementar Web Workers para realizar chamadas paralelas à API.
+- [x] Configurar a comunicação entre Web Workers e a área de memória compartilhada.
 
 ### Coleta de Dados
 

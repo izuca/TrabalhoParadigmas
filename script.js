@@ -11,6 +11,7 @@ function kmeansParallel(data,k,maxIterations){
     for(let iter = 0; iter < maxIterations; iter++){
       
       // Atribui pontos ao clusters usando workers
+      // O clustersPromises é o ArrayCompartilhado
       let clustersPromises = workers.map((worker, index) => {
         return new Promise((resolve,reject) => {
           worker.postMessage({ points: data, centroid: centroids[index] })

@@ -44,7 +44,7 @@
             </div>
         </div>
 
-        <div>
+        <div class="overflow-x-auto flex flex-col justify-center" id="selectedDiv">
             <table class="table w-full max-w-xs overflow-x-auto">
                 <!-- head -->
                 <thead>
@@ -171,6 +171,31 @@
             selectedPlayers.forEach(player => {
                 moveSelectedPlayer(player.closest("tr"), true);
             });
+        }
+
+        // Adiciona um botão para buscar jogadores similares
+        
+        const searchSimilarButton = document.createElement("button");
+        searchSimilarButton.textContent = "Buscar Similares";
+        searchSimilarButton.classList.add("btn");
+        searchSimilarButton.addEventListener("click", () => {
+            searchSimilarPlayers();
+        })
+
+        document.getElementById("selectedDiv").appendChild(searchSimilarButton);
+
+        function searchSimilarPlayers(){
+            const similarPlayers = document.querySelectorAll("#selected-Players tr");
+            const similarPlayersData = [];
+
+            similarPlayers.forEach( player => {
+                const playerName = player.querySelector("td:first-child").textContent;
+
+                //Adicionando o nome do jogador ao array
+                similarPlayersData.push(playerName);
+            })
+
+            console.log("Jogadores a buscar:", similarPlayersData)
         }
     });
 </script>
