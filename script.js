@@ -49,13 +49,13 @@ function kmeansParallel(data,k,maxIterations,centroids){
       })
     }
   }
-  
+  //Isso precisa ir pro worker
   function initializeCentroids(data, k){
     //Seleciona os k itens selecionados como centróides iniciais
     return data.slice(0,k); //Atualmente aleatorio
   }
   
-  
+  //Pode ser feito na thread principal
   function updateCentroids(clusters, k){
     // Calcula os novos centróides com base nos pontos atribuídos aos clusters
     let newCentroids = [];
@@ -68,6 +68,7 @@ function kmeansParallel(data,k,maxIterations,centroids){
     return newCentroids;
   }
   
+  //Errado segundo o professor
   function calculateCentroid(cluster){
     // Calcula o centróide de um cluster como a média dos pontos no cluster
     let centroid = {
@@ -77,7 +78,9 @@ function kmeansParallel(data,k,maxIterations,centroids){
       reb: 0,
       pf: 0
     };
-  
+    
+
+    // Essa média aritmética que estaria errada, seria uma boa revisarmos a lógica e enviar alguns e-mails para termos certeza
     for(let i = 0; i < cluster.length; i++){
       centroid.pts += cluster[i].pts;
       centroid.stl += cluster[i].stl;

@@ -1,8 +1,12 @@
+//Errado, eu preciso arrumar uma forma de montar um SAB com workers, sem precisar esperar 7 minutos
+
 const playerIds = Array.from({ length: 455 }, (_, index) => index + 1);
 const apiUrl = 'https://www.balldontlie.io/api/v1/season_averages?season=2018&player_ids[]=';
 const reqPerMinute = 60;
 const delay = (60 * 1000) ;
 
+
+// Talvez proxy??? ou vpn??? Algum jeito de burlar o limite da API
 async function getPlayerData(playerId) {
   const response = await fetch(`${apiUrl}${playerId}`);
   const playerAverage = await response.json();
@@ -11,7 +15,7 @@ async function getPlayerData(playerId) {
 
 async function getAllPlayerData() {
   const filteredPlayerDataArray = [];
-
+ 
   for (const playerId of playerIds) {
     try {
       if(playerId % 60 === 0){

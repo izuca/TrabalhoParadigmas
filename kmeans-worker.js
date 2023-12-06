@@ -9,15 +9,21 @@ self.onmessage = function(event) {
   
   function assignToClusters(data, centroids){
     let cluster = []
-    const limite = 2;
+    const limite = 2; // Errado, não é pra compararmos com limite e sim se for o menor (confesso que n entendi direito)
+
     for(let i = 0; i < data.length; i++) {
       let point = data[i];
       let distance = calculateDistance(point, centroids);
-      
-      if(distance < limite)
+    
+      if(distance < limite) //Precisamos mudar isso
           cluster.push(point);
     }
     
+    // Além de calcular o cluster, precisamos usar o worker pra calcular os novos centróides
+    // (sim serão todos os centróides por cluster, e uma porção do SAB para ele)
+    // Para isso vamos ter que mecher com controle de concorrência etc etc...
+    // Tudo isso para não ficar com o mesmo ponto em diferentes clusters
+
     return cluster;
   }
   
