@@ -187,7 +187,7 @@
           selectedPlayers.forEach((player) => {
             moveSelectedPlayer(player.closest("tr"), true);
           });
-          
+
           removeDuplicates();
         }
 
@@ -223,9 +223,6 @@
 
           return uniqueRowContents;
         }
-        // function removeDuplicates(alreadySelected) {
-        //   return [...new Set(alreadySelected)];
-        // }
 
         // Adiciona um botão para buscar jogadores similares
 
@@ -238,29 +235,16 @@
 
         document.getElementById("selectedDiv").appendChild(searchSimilarButton);
 
-        async function searchSimilarPlayers() {
-          const similarPlayers = document.querySelectorAll(
-            "#selected-Players tr"
-          );
+        function searchSimilarPlayers() {
+          const rows = [...document.querySelectorAll("#selected-Players tr")];
           const similarPlayersData = [];
 
-          //Mapeia um jogador para uma Promise
-          const playerPromises = Array.from(similarPlayers).map(
-            async (player) => {
-              const playerName =
-                player.querySelector("td:first-child").textContent;
-              try {
-                const playerData = await fetchPlayerByName(playerName);
-                //Adicionando os dados do jogador ao array
-                similarPlayersData.push(playerData);
-              } catch (error) {
-                console.error("Erro");
-              }
-            }
-          );
+          //Guarda IDs dos Jogadores selecionados
+          rows.forEach((row) => {
+            const playerId = row.querySelector("td:first-child").textContent;
 
-          //Aguarda todas as Promises serem resolvidas
-          await Promise.all(playerPromises);
+            similarPlayersData.push(playerId);
+          });
 
           initializeSpecificCentroids(similarPlayersData);
         }
@@ -271,12 +255,12 @@
           const averagePromises = Array.from(similarPlayersData).map(
             async (singleData) => {
               try {
-                const average = await getPlayerData(singleData.id);
+                const average = await getPlayerData(singleData);
 
                 if (average) averageData.push(average);
                 else
                   console.log(
-                    `${singleData.first_name} não possui registro nessa Temporada`
+                    `O jogador de ID:${singleData} não possui registro nessa Temporada`
                   );
               } catch (error) {
                 console.error("Erro ao obter média por ID:", error);
