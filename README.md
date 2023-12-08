@@ -2,9 +2,6 @@
 # BALLDONTLIE API
 # Observações do Professor
 
-## Parte 1
-
-- [x] Fazer o tratamento de seleções repetidas
 ## Parte 2
 
 - [ ] Utilizar Web Workers para coletar dados da API remotamente(opcional).
