@@ -1,11 +1,25 @@
-// kmeans-worker.js
-
 self.onmessage = function (event) {
-  // Recebe pontos, centróide, SharedArrayBuffer e índice do buffer
+  
   let points = event.data.points;
   let centroid = event.data.centroid;
-  let sab = event.data.sab;
+  let sab = event.data.Sab;
   let sabIndex = event.data.sabIndex;
+
+  //Testando atomics
+  console.log(sab)
+  const SabView = new Int32Array(sab)
+
+  console.log('inside worker',SabView)
+  console.log(sabIndex,' Começando a trabalhar');
+  console.log(typeof(SabView))
+  Atomics.wait(SabView,0,0); //N ta funfandooooooooooo
+  Atomics.store(SabView,0,0);
+  
+  console.log('Working on ',sabIndex)
+  
+  SabView[sabIndex + 1] = 5 * sabIndex;
+  
+  Atomics.store(SabView,0,1);
 
   // Atribui pontos ao cluster correspondente
   let cluster = assignToClusters(points, centroid);
@@ -18,16 +32,16 @@ self.onmessage = function (event) {
 };
 
 function assignToClusters(data, centroids) {
-  // Inicializa um array vazio para cada cluster
+  
   const clusters = new Array(centroids.length).fill().map(() => []);
 
   // Para cada ponto, encontre o cluster correspondente
   for (let i = 0; i < data.length; i++) {
     const point = data[i];
     const assignedCluster = calculateClosestCluster(point, centroids);
-    //console.log("Todos os centroids:",centroids);
+    
 
-    // Adicione o ponto ao cluster atribuído
+    
     if (assignedCluster !== -1) {
       clusters[assignedCluster].push(point);
     } else {

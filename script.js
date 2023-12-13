@@ -1,39 +1,49 @@
 async function kmeansParallel(data, k, maxIterations, selecionado) {
   let nunclusters; // Numero de linhas dentro do cluster(para printar)
 
-  const sab = new SharedArrayBuffer(
-    Float64Array.BYTES_PER_ELEMENT * data.length * k
+  //Criando o SAB com os dados iniciais do dataSet
+  const Sab = new SharedArrayBuffer(
+    Int32Array.BYTES_PER_ELEMENT * data.length * 7
   );
-  const sabView = new Float64Array(sab);
+  const SabView = new Int32Array(Sab);
+  let SabCounter = 0;
+  console.log(Sab)
+  //Populando o SAB
+  for (let i = 0; i < data.length; i++) {
+    let objvalue = Object.values(data[i]);
 
-  //let centroids = initializeCentroids(data, k);
+    SabView.set(objvalue, SabCounter + 1);  
+    SabCounter += 6;
+  }
+  console.log(SabView)
+  console.log(typeof(SabView))
+
   let centroids = selecionado;
   console.log("centroids no inicio:", centroids);
 
   let workers = initializeWorkers(k);
   let clusters = [];
 
-  //let numberOfWorkers = workers.length;
-  //console.log(`Número de workers de fora: ${numberOfWorkers}`);
 
   for (let iter = 0; iter < maxIterations; iter++) {
     // Atribui pontos ao clusters usando workers
-    // O clustersPromises é o ArrayCompartilhado
+    Atomics.store(SabView,0,0)
+    let awoken =Atomics.notify(SabView,0,1);
     let clustersPromises = workers.map((worker, index) => {
       return new Promise((resolve, reject) => {
         worker.postMessage({
           points: data,
           centroid: centroids,
-          sab: sab,
+          Sab: Sab,
           sabIndex: index,
         });
 
+        Atomics.store(SabView,0,1)
         worker.onmessage = (event) => {
           let { cluster, sabIndex } = event.data;
-          clusters[sabIndex] = cluster;
+          clusters[sabIndex] = cluster; //Talvez passar direto pro SAB
           resolve();
         };
-        //console.log("haaaaaaaaaaaaaaaaaaaaaaaa",worker);
 
         worker.onerror = (error) => {
           console.error("Erro", error);
@@ -48,7 +58,7 @@ async function kmeansParallel(data, k, maxIterations, selecionado) {
     console.log(`Número de promises: ${numberOfPromises}`);
     // Atualiza os centróides
     let oldCentroids = centroids;
-
+  
     for (let i = 0; i < clusters.length; i++) {
       const innerArray = clusters[i];
       for (let j = 0; j < innerArray.length; j++) {
@@ -57,16 +67,19 @@ async function kmeansParallel(data, k, maxIterations, selecionado) {
         console.log("Número de clusters:", nunclusters);
       }
     }
-
+    //Retirar ?
     const ResultadoFinal = createSharedArrayBuffer(clusters, nunclusters);
+    
     centroids = updateCentroids(clusters, k);
 
+    //Retirar?
     printResult([...ResultadoFinal][0]);
+
     if (checkConvergence(centroids, oldCentroids)) {
       // Termina workers
       await terminateWorkers(workers);
       console.log("clusters finais do final ----", clusters);
-      console.log("O sab no final eh", sab);
+      console.log("O sab no final eh", sabView);
 
       return clusters;
     }
@@ -86,22 +99,6 @@ function checkConvergence(newCentroids, oldCentroids) {
   return true; // Convergiu
 }
 
-//Isso precisa ir pro worker
-function initializeCentroids(data, k) {
-  let centroids = [];
-  const dataLength = data.length;
-
-  for (let i = 0; i < k; i++) {
-    // Escolhe um índice aleatório dentro do tamanho dos dados
-    const randomIndex = Math.floor(Math.random() * dataLength);
-
-    // Adiciona o ponto correspondente ao índice como centróide
-    centroids.push(data[randomIndex]);
-  }
-
-  return centroids;
-}
-
 function initializeWorkers(k) {
   let workers = [];
 
@@ -117,11 +114,8 @@ function updateCentroids(clusters, k) {
   // Calcula os novos centróides com base nos pontos atribuídos aos clusters
   let newCentroids = [];
   console.log("conteudo de K:", k);
+  
   for (let i = 0; i < k; i++) {
-    console.log(
-      "valor dos clusters antes de entrar na calculateCentroid ",
-      clusters
-    );
     let centroid = calculateCentroid(clusters[i]);
     newCentroids.push(centroid);
   }
@@ -162,19 +156,8 @@ function calculateCentroid(cluster) {
   return centroid;
 }
 
-function checkConvergence(newCentroids, oldCentroids) {
-  let tolerance = 0.0001;
 
-  for (let i = 0; i < newCentroids.length; i++) {
-    for (let prop in newCentroids[i]) {
-      if (Math.abs(newCentroids[i][prop] - oldCentroids[i][prop]) > tolerance) {
-        return false; // Ainda não convergiu
-      }
-    }
-  }
-  return true; // Convergiu
-}
-
+// Retirar?
 function createSharedArrayBuffer(dataArray, nunclusters) {
   sab = new SharedArrayBuffer(
     dataArray.length * nunclusters * Int32Array.BYTES_PER_ELEMENT * 5
@@ -225,8 +208,3 @@ async function terminateWorkers(workers) {
   await Promise.all(terminatePromises);
 }
 
-//   let data = dataSet();
-//   let k = 5;
-//   let maxIterations = 100;
-
-//kmeansParallel(data, k, maxIterations)
