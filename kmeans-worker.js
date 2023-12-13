@@ -6,11 +6,10 @@ self.onmessage = function (event) {
   let centroid = event.data.centroid;
   let sab = event.data.sab;
   let sabIndex = event.data.sabIndex;
-  
 
   // Atribui pontos ao cluster correspondente
   let cluster = assignToClusters(points, centroid);
-  console.log("controid antes do assignToClusters:",centroid);
+  console.log("controid antes do assignToClusters:", centroid);
   // Atualiza a parte correta do SharedArrayBuffer
   updateSharedArrayBuffer(sab, cluster, sabIndex);
 
@@ -28,15 +27,15 @@ function assignToClusters(data, centroids) {
     const assignedCluster = calculateClosestCluster(point, centroids);
     //console.log("Todos os centroids:",centroids);
 
-
     // Adicione o ponto ao cluster atribuído
     if (assignedCluster !== -1) {
       clusters[assignedCluster].push(point);
     } else {
-      console.error("Erro: assignedCluster é -1. Alguma lógica adicional é necessária.");
+      console.error(
+        "Erro: assignedCluster é -1. Alguma lógica adicional é necessária."
+      );
     }
   }
-
 
   return clusters;
 }
@@ -87,10 +86,10 @@ function calculateDistance(point1, point2) {
   // Aqui, usamos a distância euclidiana como exemplo
   return Math.sqrt(
     Math.pow(point1.pts - point2.pts, 2) +
-    Math.pow(point1.stl - point2.stl, 2) +
-    Math.pow(point1.ast - point2.ast, 2) +
-    Math.pow(point1.reb - point2.reb, 2) +
-    Math.pow(point1.pf - point2.pf, 2)
+      Math.pow(point1.stl - point2.stl, 2) +
+      Math.pow(point1.ast - point2.ast, 2) +
+      Math.pow(point1.reb - point2.reb, 2) +
+      Math.pow(point1.pf - point2.pf, 2)
   );
 }
 
@@ -101,7 +100,7 @@ function updateSharedArrayBuffer(sab, cluster, sabIndex) {
   // Extrair os valores do cluster para um array plano
   let flatArray = new Array(sabView.length).fill(0);
 
-  cluster.forEach(obj => {
+  cluster.forEach((obj) => {
     let objValues = Object.values(obj);
     objValues.forEach((value, index) => {
       flatArray[index] += value;
@@ -119,14 +118,16 @@ function updateSharedArrayBuffer(sab, cluster, sabIndex) {
       sabView[offset + i] = flatArray[i] / clusterSize;
     }
   } else {
-    console.error('Error: Offset is out of bounds.');
+    console.error("Error: Offset is out of bounds.");
   }
 }
 
-function createSharedArrayBuffer(dataArray,nunclusters) {
-  const buffer = new SharedArrayBuffer(dataArray.length * nunclusters * Int32Array.BYTES_PER_ELEMENT * 5);
+function createSharedArrayBuffer(dataArray, nunclusters) {
+  const buffer = new SharedArrayBuffer(
+    dataArray.length * nunclusters * Int32Array.BYTES_PER_ELEMENT * 5
+  );
   const int32Array = new Int32Array(buffer);
-  
+
   let currentIndex = 0;
 
   for (let i = 0; i < dataArray.length; i++) {
@@ -154,6 +155,8 @@ function printResult(sharedArrayBuffer) {
     const ast = sharedArrayBuffer[i + 3] / 100;
     const reb = sharedArrayBuffer[i + 4] / 100;
 
-    console.log(`ID: ${id}, PTS: ${pts}, STL: ${stl}, AST: ${ast}, REB: ${reb}`);
+    console.log(
+      `ID: ${id}, PTS: ${pts}, STL: ${stl}, AST: ${ast}, REB: ${reb}`
+    );
   }
 }
