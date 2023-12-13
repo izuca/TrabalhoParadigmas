@@ -267,7 +267,7 @@
         let k = averageData.length;
         let maxIterations = 100;
         if (averageData.length !== 0){
-          console.log("Os escolhidos:",averageData);
+          console.log("Os escolhidos:",averageData[0]);
           kmeansParallel(data, k, maxIterations, averageData);
         }
         else console.log("Tente outro Jogador");
@@ -275,7 +275,6 @@
     });
   </script>
   <!-- Observações do professor -->
-  <!-- Aplicar um tratamento pra seleções repetidas -->
 
   <!-- Busca de Dados da API -> SAB -> Workers -> SAB -> ... -->
 </body>
